@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 import ShowDiaLog from "@/components/DiaLog";
 
+import AlEarth from '@/components/EchartGraphics/AlEarth';
+
 const App: React.FC<any> = () => {
   const [visableDialog, setVisableDialog] = useState<boolean>(false);
 
@@ -10,8 +12,7 @@ const App: React.FC<any> = () => {
   return (
     <div className="my-app">
       <ShowDiaLog visable={visableDialog} />
-      2
-     
+      <AlEarth />
     </div>
   );
 };

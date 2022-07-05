@@ -1,14 +1,18 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as echarts from "echarts";
-
+import "echarts-gl";
 
 interface ChartProps {
-  options: any
+  title?: string;
+  options: any;
 }
 
 const Chart: React.FC<ChartProps> = (props) => {
+  const { options, title } = props;
 
-  const { options } = props;
+  const [curStyle, setCurStyle] = useState<React.CSSProperties>({
+    height: "100vh",
+  });
 
   const chartRef = useRef<any>(null);
   let chartInstance = null as any;
@@ -25,6 +29,14 @@ const Chart: React.FC<ChartProps> = (props) => {
         chartInstance = echarts.init(chartRef.current);
       }
       chartInstance.setOption(options);
+
+      console.log(chartRef.current, "chartRef.current");
+
+      setTimeout(() => {
+        setCurStyle({
+          height: "50vh"
+        })
+      }, 1000);
     } catch (error: any) {
       console.error("error", error.message);
       chartInstance && chartInstance.dispose();
@@ -40,6 +52,8 @@ const Chart: React.FC<ChartProps> = (props) => {
   useEffect(() => {
     renderChart();
 
+    eventsCharts();
+
     return () => {
       // 销毁图表实例，释放内存
       chartInstance && chartInstance.dispose();
@@ -52,12 +66,15 @@ const Chart: React.FC<ChartProps> = (props) => {
     return () => window.removeEventListener("resize", resizeHandler);
   }, []);
 
+  // charts事件
+  const eventsCharts = (): void => {};
+
   return (
     <div>
-      <h2>折线+柱状图</h2>
-      <div style={{ height: "400px" }} ref={chartRef} />
+      {title && <h2>{title}</h2>}
+      <div style={curStyle} ref={chartRef} />
     </div>
   );
-}
+};
 
 export default Chart;
